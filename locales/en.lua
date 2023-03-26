@@ -5,6 +5,7 @@ local Translations = {
         door_has_opened = "The door has opened"
     },
     error = {
+      job_check = 'You can\'t do that as law enforcement or fire/ems!',
         cancel_message = "Cancelled",
         safe_too_strong = "Looks like the safe lock is too strong...",
         missing_item = "You're missing an item...",

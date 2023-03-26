@@ -1,3 +1,6 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+local PlayerData = QBCore.Functions.GetPlayerData()
+
 local inBankCardAZone = false
 local currentLocker = 0
 local copsCalled = false
@@ -23,7 +26,7 @@ RegisterNetEvent('qb-bankrobbery:UseBankcardA', function()
     if not inBankCardAZone then return end
     QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
         if not isBusy then
-            if CurrentCops >= Config.MinimumPaletoPolice then
+            if CurrentCops >= Config.MinimumPaletoPolice and PlayerData.job.type ~= "leo" or PlayerData.job.type ~= "fire" then
                 if not Config.BigBanks["paleto"]["isOpened"] then
                     Config.ShowRequiredItems(nil, false)
                     loadAnimDict("anim@gangops@facility@servers@")
@@ -143,28 +146,6 @@ CreateThread(function()
                     end
                 end
             end)
-        end
-    end
-    if not Config.UseTarget then
-        while true do
-            local sleep = 1000
-            if isLoggedIn then
-                if currentLocker ~= 0 and not IsDrilling and Config.BigBanks["paleto"]["isOpened"] and not Config.BigBanks["paleto"]["lockers"][currentLocker]["isBusy"] and not Config.BigBanks["paleto"]["lockers"][currentLocker]["isOpened"] then
-                    sleep = 0
-                    if IsControlJustPressed(0, 38) then
-                        exports['qb-core']:KeyPressed()
-                        Wait(500)
-                        exports['qb-core']:HideText()
-                        if CurrentCops >= Config.MinimumPaletoPolice then
-                            openLocker("paleto", currentLocker)
-                        else
-                            QBCore.Functions.Notify(Lang:t("error.minimum_police_required", {police = Config.MinimumPaletoPolice}), "error")
-                        end
-                        sleep = 1000
-                    end
-                end
-            end
-            Wait(sleep)
         end
     end
 end)

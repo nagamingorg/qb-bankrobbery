@@ -1,3 +1,6 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+local PlayerData = QBCore.Functions.GetPlayerData()
+
 local closestStation = 0
 local currentStation = 0
 local currentFires = {}
